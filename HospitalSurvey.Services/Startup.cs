@@ -32,7 +32,7 @@ namespace HospitalSurvey.Services
                 options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
 
-            services.AddIdentity<AppUser, HospitalSurveyDbContext>()
+            services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<HospitalSurveyDbContext>()
                 .AddDefaultTokenProviders();
 
