@@ -19,7 +19,7 @@ namespace HospitalSurvey.Data.EF
                 .Build();
 
 
-            var connectionString = configuration.GetConnectionString("mamEduDb");
+            var connectionString = configuration.GetConnectionString("hospitalSurveyDb");
 
             var optionsBuilder = new DbContextOptionsBuilder<HospitalSurveyDbContext>();
             optionsBuilder.UseSqlServer(connectionString);
