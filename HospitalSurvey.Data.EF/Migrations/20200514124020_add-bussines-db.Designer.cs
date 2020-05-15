@@ -4,14 +4,16 @@ using HospitalSurvey.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HospitalSurvey.Data.EF.Migrations
 {
     [DbContext(typeof(HospitalSurveyDbContext))]
-    partial class HospitalSurveyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200514124020_add-bussines-db")]
+    partial class addbussinesdb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -22,11 +22,22 @@ namespace HospitalSurvey.Data.EF
             builder.ApplyConfiguration(new AnnouncementUserConfiguration());
 
 
-
-
             builder.ApplyConfiguration(new AppConfigConfiguration());
             builder.ApplyConfiguration(new AppUserConfiguration());
             builder.ApplyConfiguration(new AppRoleConfiguration());
+
+
+            builder.ApplyConfiguration(new FunctionConfiguration());
+            builder.ApplyConfiguration(new HospitalDepartmentConfiguration());
+            builder.ApplyConfiguration(new PatientConfiguration());
+            builder.ApplyConfiguration(new PermissionConfiguration());
+            builder.ApplyConfiguration(new PermissionDetailConfiguration());
+            builder.ApplyConfiguration(new SatisfactionLevelConiguration());
+            builder.ApplyConfiguration(new StaffConfiguration());
+            builder.ApplyConfiguration(new SurveyFormConfiguration());
+            builder.ApplyConfiguration(new SurveyFormDetailConfiguration());
+            builder.ApplyConfiguration(new SurveyQuestionConfiguration());
+
 
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
             builder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
@@ -45,6 +56,20 @@ namespace HospitalSurvey.Data.EF
         public DbSet<Contact> Contacts { get; set; }
 
         public DbSet<Language> Languages { get; set; }
+
+
+
+        public DbSet<Function> Functions { get; set; }
+        public DbSet<HospitalDepartment> HospitalDepartments { get; set; }
+        public DbSet<Patient> patients { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PermissionDetail> PermissionDetails { get; set; }
+        public DbSet<SatisfactionLevel> SatisfactionLevels { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<SurveyForm> SurveyForms { get; set; }
+        public DbSet<SurveyFormDetail> SurveyFormDetails { get; set; }
+        public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
+
 
     }
 }
