@@ -1,10 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HospitalSurvey.Infrastructure.Interfaces;
 
 namespace HospitalSurvey.Data.EF
 {
-    class EFUnitOfWork
+    public class EFUnitOfWork : IUnitOfWork
     {
+        private readonly HospitalSurveyDbContext _context;
+
+        public EFUnitOfWork(HospitalSurveyDbContext context)
+        {
+            this._context = context;
+        }
+
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
     }
 }

@@ -1,6 +1,10 @@
+using AutoMapper;
+using HospitalSurvey.Application.Implementation;
+using HospitalSurvey.Application.Interfaces;
 using HospitalSurvey.Application.System.Users;
 using HospitalSurvey.Data.EF;
 using HospitalSurvey.Data.Entities;
+using HospitalSurvey.Infrastructure.Interfaces;
 using HospitalSurvey.Utilities.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,8 +30,10 @@ namespace HospitalSurvey.Services
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews();
+            services.AddSession();
 
+           
             services.AddDbContext<HospitalSurveyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
@@ -36,13 +42,19 @@ namespace HospitalSurvey.Services
                 .AddEntityFrameworkStores<HospitalSurveyDbContext>()
                 .AddDefaultTokenProviders();
 
-
+            services.AddMemoryCache();
             // Declare DI
 
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
-            services.AddTransient<IUserService, UserService>();
+           
+
+            services.AddAutoMapper();
+
+            services.AddSingleton(Mapper.Configuration);
+
+            services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -100,6 +112,14 @@ namespace HospitalSurvey.Services
                         .AllowAnyMethod();
                 });
             });
+
+
+            services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
+            services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IHospitalDepartmentService, HospitalDepartmentService>();
+
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
