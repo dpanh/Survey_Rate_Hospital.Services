@@ -102,6 +102,32 @@ namespace HospitalSurvey.Services.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteHospitalDepartment(int id)
+        {
+            try
+            {
+                _hospitalDepartmentService.Delete(id);
+                _hospitalDepartmentService.SaveChanges();
+
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_hospitalDepartmentService.CheckExistedId(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
 
     }
 }

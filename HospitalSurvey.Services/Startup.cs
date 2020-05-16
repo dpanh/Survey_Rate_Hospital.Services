@@ -24,12 +24,27 @@ namespace HospitalSurvey.Services
         {
             Configuration = configuration;
         }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:4200/",
+                                                          "http://localhost:4200",
+                                                          "localhost:4200",
+                                                          "https://localhost:4200")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
+
             services.AddControllersWithViews();
             services.AddSession();
 
@@ -55,6 +70,8 @@ namespace HospitalSurvey.Services
             services.AddSingleton(Mapper.Configuration);
 
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+
+
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -102,16 +119,6 @@ namespace HospitalSurvey.Services
                        options.Audience = "thanhoangAPI";
                    });
 
-            services.AddCors(options =>
-            {
-                // this defines a CORS policy called "default"
-                options.AddPolicy("default", policy =>
-                {
-                    policy.WithOrigins("https://localhost:5003")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-            });
 
 
             services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
@@ -134,11 +141,11 @@ namespace HospitalSurvey.Services
 
 
 
-            app.UseCors("default");
+    
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
