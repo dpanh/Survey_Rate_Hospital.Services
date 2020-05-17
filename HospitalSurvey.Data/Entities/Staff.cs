@@ -19,7 +19,7 @@ namespace HospitalSurvey.Data.Entities
         public DateTime DateModified { get; set; }
         public Status Status { get; set; }
         
-        public int HospitalDepartmentId { get; set; }
-        public HospitalDepartment HospitalDepartment { get; set; }
+        public int? HospitalDepartmentId { get; set; }
+        public virtual HospitalDepartment HospitalDepartment { get; set; }
     }
 }
